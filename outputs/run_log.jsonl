@@ -3,15 +3,8 @@
 {"ticket_id": "TKT-160477", "status": "ok", "errors": [], "seconds": 334.39, "llm_calls": 8}
 {"ticket_id": "TKT-192732", "status": "ok", "errors": [], "seconds": 208.93, "llm_calls": 7}
 {"ticket_id": "TKT-169327", "status": "ok", "errors": [], "seconds": 161.3, "llm_calls": 9}
-{"ticket_id": "TKT-160067", "status": "ok", "errors": [], "seconds": 133.33, "llm_calls": 9}
+{"ticket_id": "TKT-160067", "status": "ok", "errors": [], "seconds": 43.14, "llm_calls": 3}
 {"ticket_id": "TKT-160094", "status": "ok", "errors": [], "seconds": 132.05, "llm_calls": 9}
 {"ticket_id": "TKT-128253", "status": "ok", "errors": [], "seconds": 146.08, "llm_calls": 9}
 {"ticket_id": "TKT-135081", "status": "ok", "errors": [], "seconds": 83.78, "llm_calls": 5}
 {"ticket_id": "TKT-158764", "status": "ok", "errors": [], "seconds": 102.8, "llm_calls": 6}
-{"ticket_id": "TKT-160067", "status": "ok", "errors": [], "seconds": 85.97, "llm_calls": 6}
-{"ticket_id": "TKT-160067", "status": "ok", "errors": [], "seconds": 43.14, "llm_calls": 4}
-{"ticket_id": "TKT-160067", "status": "ok", "errors": [], "seconds": 43.7, "llm_calls": 4}
-{"ticket_id": "TKT-160067", "status": "ok", "errors": [], "seconds": 5.26, "llm_calls": 2}
-{"ticket_id": "TKT-160067", "status": "ok", "errors": [], "seconds": 5.94, "llm_calls": 2}
-{"ticket_id": "TKT-160067", "status": "fallback", "errors": ["LLM provider did not produce a usable decision"], "seconds": 5.95, "llm_calls": 2}
-{"ticket_id": "TKT-160067", "status": "fallback", "errors": ["LLM provider did not produce a usable decision"], "seconds": 185.92, "llm_calls": 9}
