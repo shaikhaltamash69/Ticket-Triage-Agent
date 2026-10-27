@@ -1,0 +1,85 @@
+{
+  "ticket_id": "TKT-160477",
+  "account_id": "ACC-1633",
+  "category": "bug",
+  "priority": "P3",
+  "route_to": "L1_support",
+  "escalate": false,
+  "notify_tam": false,
+  "duplicate_of": null,
+  "needs_clarification": false,
+  "kb_references": [
+    "KB-1786",
+    "KB-2914",
+    "KB-5930"
+  ],
+  "account_signals": [
+    "Standard tier",
+    "Renewal 240 days away (2027-06-17)",
+    "0 open escalations",
+    "NPS 8",
+    "Usage stable/improving",
+    "No account risk override"
+  ],
+  "customer_reply": "Hi Frostline Retail Group team,\n\nThank you for reaching out. We've identified the cause of error E-2207 on your e-signature requests: an expired integration credential is preventing the e-signature workflow from completing, which is why your two supplier agreements are being rejected immediately.\n\nHere's how to resolve it:\n1. Open Admin > Integrations > Credentials.\n2. Regenerate the expired credential and update it in your connected e-signature system.\n3. Trigger a manual sync and confirm the job status shows \"Completed.\"\n\nOnce the credential is refreshed, please re-send the two blocked supplier agreements \u2014 they should process normally.\n\nIf the issue persists after following these steps, or if more than 50 records become affected, please let us know and we'll escalate to our engineering team. In that case, please have the tenant ID, affected record IDs, exact error text, and time of failure (UTC) ready.\n\nBest regards,\nSupport Team",
+  "internal_note": "E-2207 on CLM e-signature for ACC-1633 (Frostline Retail Group, Standard tier). Cause per KB-1786: expired integration credential. 2 contracts affected, single tenant. Resolution is tenant-admin self-service (regenerate credential + manual sync). No L2 escalation needed (<50 records, single tenant). No duplicates in 7-day window. No account risk override (renewal 240d, 0 escalations, stable usage). Route to L1 for guided resolution. If customer reports failure after steps, escalate to L2 with tenant ID, record IDs, error text, UTC time.",
+  "confidence": 0.92,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "get_policy",
+      "input": "{\"policy_type\": \"all\"}",
+      "observation": "{\"policy_type\": \"all\", \"articles\": [{\"id\": \"KB-2914\", \"title\": \"Support priority and escalation policy\", \"body\": \"\\n# Support priority and escalation policy\\n\\nThis policy defines how every ticket is prioritised and routed. Customer-selected priority is an input, not the decision.\\n\\n## Priority def",
+      "thought": "Let me start by getting the support policy to understand priority, routing, and escalation rules, and simultaneously resolve the account."
+    },
+    {
+      "step": 2,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"frostline-retail-group.example\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:frostline-retail-group.example\", \"account_id\": \"ACC-1633\", \"company_name\": \"Frostline Retail Group\", \"domain\": \"frostline-retail-group.example\", \"tier\": \"Standard\", \"arr_band\": \"100k-250k\", \"renewal_date\": \"2027-06-17\", \"days_to_renewal\": 240, \"open_escalations\": 0,",
+      "thought": "I have the policy. Now let me resolve the account and search the KB for error code E-2207 in the CLM module."
+    },
+    {
+      "step": 3,
+      "action": "search_kb",
+      "input": "{\"query\": \"E-2207 e-signature request rejected CLM\", \"module\": \"CLM\", \"top_k\": 5}",
+      "observation": "{\"query\": \"E-2207 e-signature request rejected CLM\", \"results\": [{\"id\": \"KB-8147\", \"title\": \"Release notes 26.2\", \"module\": \"All\", \"type\": \"release_notes\", \"status\": \"current\", \"error_codes\": [], \"snippet\": \"# Release notes 26.2\\n\\nRelease date: 2026-01-04\\n\\n| Module | Type | Change |\\n|---|---|---",
+      "thought": "Account resolved: ACC-1633, Standard tier, renewal 240 days away (not within 90 days), 0 open escalations, NPS 8. No account risk override applies. Now let me search the KB for error E-2207 in CLM module and check ticket history for duplicates."
+    },
+    {
+      "step": 4,
+      "action": "search_kb",
+      "input": "{\"query\": \"E-2207\", \"top_k\": 5}",
+      "observation": "{\"query\": \"E-2207\", \"results\": [{\"id\": \"KB-1786\", \"title\": \"E-2207: E-signature request is rejected\", \"module\": \"Contracts\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-2207\"], \"snippet\": \"# E-2207: E-signature request is rejected\\n\\n## Symptoms\\nUsers see error **E-2207** whe",
+      "thought": "The KB search didn't return a specific article for E-2207. Let me search more specifically for the error code and also check ticket history for duplicates."
+    },
+    {
+      "step": 5,
+      "action": "get_kb_article",
+      "input": "{\"article_id\": \"KB-1786\"}",
+      "observation": "{\"found\": true, \"id\": \"KB-1786\", \"title\": \"E-2207: E-signature request is rejected\", \"module\": \"Contracts\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-2207\"], \"last_updated\": \"2026-04-18\", \"related\": [\"KB-2914\"], \"body\": \"\\n# E-2207: E-signature request is rejected\\n\\n## Symp",
+      "thought": "Found KB-1786 which is exactly about E-2207. Let me read the full article and also check ticket history for duplicates."
+    },
+    {
+      "step": 6,
+      "action": "get_ticket_history",
+      "input": "{\"account_id\": \"ACC-1633\", \"current_ticket_id\": \"TKT-160477\", \"module\": \"CLM\", \"error_code\": \"E-2207\", \"subject\": \"E-signature request rejected\", \"days_back\": 7}",
+      "observation": "{\"account_id\": \"ACC-1633\", \"total_tickets\": 17, \"summary\": \"Total tickets on file: 17\\nLast 30 days: 1 tickets\\nTop modules: CLM(1)\", \"recent_tickets\": [{\"ticket_id\": \"TKT-160477\", \"created_at\": \"2026-10-19T15:53\", \"module\": \"CLM\", \"subject\": \"E-signature request rejected\", \"status\": \"open\", \"error_",
+      "thought": "I have the KB article. E-2207 is caused by an expired integration credential, resolvable by a tenant admin. Only 2 contracts are affected (not >50 records), single tenant. This is a function impaired with a workaround (regenerate credential), so P3. Let me check ticket history for duplicates."
+    },
+    {
+      "step": 7,
+      "action": "get_account_health",
+      "input": "{\"account_id\": \"ACC-1633\", \"months\": 3}",
+      "observation": "{\"account_id\": \"ACC-1633\", \"available\": true, \"months\": [\"2026-08\", \"2026-09\", \"2026-10\"], \"active_users\": {\"values\": [83.0, 81.0, 86.0], \"direction\": \"stable\", \"pct_change\": 3.6, \"latest\": 86.0}, \"login_rate_pct\": {\"values\": [76.9, 76.8, 83.7], \"direction\": \"stable\", \"pct_change\": 8.8, \"latest\": 83",
+      "thought": "No duplicates found. Let me check account health to confirm no risk signals, then I'll have everything needed for the decision.\n\nSummary of findings:\n- Account: ACC-1633, Standard tier, renewal 240 days away (not within 90 days), 0 open escalations, NPS 8. No account risk override.\n- Error E-2207: expired integration credential, resolvable by tenant admin (regenerate credential + manual sync). 2 c"
+    },
+    {
+      "step": 8,
+      "action": "finish",
+      "input": "{\"decision\": {\"ticket_id\": \"TKT-160477\", \"account_id\": \"ACC-1633\", \"category\": \"bug\", \"priority\": \"P3\", \"route_to\": \"L1_support\", \"escalate\": false, \"notify_tam\": false, \"duplicate_of\": null, \"needs_clarification\": false, \"kb_references\": [\"KB-1786\", \"KB-2914\", \"KB-5930\"], \"account_signals\": [\"Stand",
+      "observation": "Submitting final decision.",
+      "thought": "I now have all the information needed.\n\nSummary:\n- Account: ACC-1633, Standard tier, renewal 240 days away, 0 escalations, NPS 8, usage stable/improving. No account risk override (not within 90 days of renewal, no 25%+ user decline, no 2+ escalations).\n- Error E-2207: expired integration credential, resolvable by tenant admin (regenerate credential + manual sync). 2 contracts affected (not >50), s"
+    }
+  ]
+}

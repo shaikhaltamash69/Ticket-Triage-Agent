@@ -1,0 +1,76 @@
+{
+  "ticket_id": "TKT-192732",
+  "account_id": "ACC-6031",
+  "category": "duplicate",
+  "priority": "P3",
+  "route_to": "L1_support",
+  "escalate": false,
+  "notify_tam": false,
+  "duplicate_of": "TKT-122022",
+  "needs_clarification": false,
+  "kb_references": [
+    "KB-2982"
+  ],
+  "account_signals": [
+    "Enterprise tier, ARR unknown",
+    "Renewal in 46 days (2026-12-05) — within 90-day risk window",
+    "NPS N/A",
+    "0 open escalations",
+    "Active users stable (-1.9% over 3mo, threshold >25% for override)",
+    "Account risk override NOT triggered (no >25% user decline, 0 escalations)"
+  ],
+  "customer_reply": "Hi Riverbend Health team,\n\nThanks for following up. I can confirm this is the same issue we're already tracking on ticket TKT-122022 (\"Spend dashboard not refreshing - E-6105\"), which was opened on 17 Oct and is still open. To avoid duplicate work, I've linked this follow-up to that ticket and it will be handled there \u2014 you'll receive all updates on TKT-122022.\n\nFor context, error E-6105 is typically caused by an expired integration credential. If you'd like to try a quick fix in the meantime, a tenant administrator can:\n1. Open Admin > Integrations > Credentials.\n2. Regenerate the credential and update it in the connected system.\n3. Trigger a manual sync and confirm the job status shows Completed.\n\nIf that doesn't resolve it, our team will pick it up on the original ticket. Please let us know if you'd like us to collect the tenant ID, affected record ID, exact error text, and time of failure (UTC) to speed up the investigation.\n\nBest regards,\nSupport Team",
+  "internal_note": "DUPLICATE of TKT-122022 (same account ACC-6031, module Spend Analytics, error E-6105, TKT-122022 opened 2026-10-17T09:47, TKT-192732 opened 2026-10-19T11:57, 2 days 2 hours apart, within 7-day window per KB-5930). Linked to original; keep original priority. E-6105 = expired integration credential, resolvable by tenant admin per KB-2982 (regenerate credential, manual sync). Escalate to L2 only if admin steps fail, >50 records affected, or multi-tenant. Priority P3 (function impaired with workaround). Account risk override NOT triggered: renewal 46 days out but active users only -1.9% (not >25%) and 0 open escalations (not 2+). No TAM notification required. Customer selected P2 but that is input only.",
+  "confidence": 0.82,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "get_policy",
+      "input": "{\"policy_type\": \"all\"}",
+      "observation": "{\"policy_type\": \"all\", \"articles\": [{\"id\": \"KB-2914\", \"title\": \"Support priority and escalation policy\", \"body\": \"\\n# Support priority and escalation policy\\n\\nThis policy defines how every ticket is prioritised and routed. Customer-selected priority is an input, not the decision.\\n\\n## Priority def",
+      "thought": "Let me start by getting the support policy to understand priority, routing, and escalation rules, and simultaneously resolve the account."
+    },
+    {
+      "step": 2,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"riverbend-health.example\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:riverbend-health.example\", \"account_id\": \"ACC-6031\", \"company_name\": \"Riverbend Health\", \"domain\": \"riverbend-health.example\", \"tier\": \"Enterprise\", \"arr_band\": \"250k-500k\", \"renewal_date\": \"2026-12-05\", \"days_to_renewal\": 46, \"open_escalations\": 0, \"nps_last\": \"9\",",
+      "thought": "I have the policy. Now let me resolve the account to get tier, renewal date, escalations, and other signals."
+    },
+    {
+      "step": 3,
+      "action": "get_account_health",
+      "input": "{\"account_id\": \"ACC-6031\", \"months\": 3}",
+      "observation": "{\"account_id\": \"ACC-6031\", \"available\": true, \"months\": [\"2026-08\", \"2026-09\", \"2026-10\"], \"active_users\": {\"values\": [566.0, 561.0, 555.0], \"direction\": \"stable\", \"pct_change\": -1.9, \"latest\": 555.0}, \"login_rate_pct\": {\"values\": [67.9, 67.0, 89.3], \"direction\": \"improving\", \"pct_change\": 31.5, \"la",
+      "thought": "Account is Enterprise, renewal in 46 days (within 90-day risk window), 0 open escalations. I need to check account health for usage trend (active users decline >25%?) to determine if the account risk override applies. Let me also search KB for the E-6105 error and check ticket history for duplicates."
+    },
+    {
+      "step": 4,
+      "action": "search_kb",
+      "input": "{\"query\": \"E-6105 spend dashboard not refreshing analytics\", \"module\": \"analytics\", \"top_k\": 5}",
+      "observation": "{\"query\": \"E-6105 spend dashboard not refreshing analytics\", \"results\": [{\"id\": \"KB-2982\", \"title\": \"E-6105: Dashboard does not refresh\", \"module\": \"Spend Analytics\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-6105\"], \"snippet\": \"# E-6105: Dashboard does not refresh\\n\\n## Sym",
+      "thought": "Account health shows stable usage (-1.9% active users, not >25% decline), 0 open escalations. So the account risk override does NOT apply (needs either >25% decline OR 2+ escalations). Now let me search KB for the E-6105 error and check ticket history for duplicates."
+    },
+    {
+      "step": 5,
+      "action": "get_kb_article",
+      "input": "{\"article_id\": \"KB-2982\"}",
+      "observation": "{\"found\": true, \"id\": \"KB-2982\", \"title\": \"E-6105: Dashboard does not refresh\", \"module\": \"Spend Analytics\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-6105\"], \"last_updated\": \"2026-05-05\", \"related\": [\"KB-2914\"], \"body\": \"\\n# E-6105: Dashboard does not refresh\\n\\n## Symptoms",
+      "thought": "KB-2982 is the exact match for E-6105. Let me read the full article to understand the cause and resolution."
+    },
+    {
+      "step": 6,
+      "action": "get_ticket_history",
+      "input": "{\"account_id\": \"ACC-6031\", \"current_ticket_id\": \"TKT-192732\", \"module\": \"analytics\", \"error_code\": \"E-6105\", \"subject\": \"Spend dashboard still not refreshing\", \"days_back\": 7}",
+      "observation": "{\"account_id\": \"ACC-6031\", \"total_tickets\": 20, \"summary\": \"Total tickets on file: 20\\nLast 30 days: 4 tickets\\nTop modules: Spend Analytics(2), analytics(1), eSourcing(1)\", \"recent_tickets\": [{\"ticket_id\": \"TKT-192732\", \"created_at\": \"2026-10-19T11:57\", \"module\": \"analytics\", \"subject\": \"Re: Spend ",
+      "thought": "I have the KB article. E-6105 is caused by an expired integration credential, resolvable by a tenant admin. Now let me check ticket history for duplicates \u2014 the subject says \"Re: Spend dashboard still not refreshing\" which suggests a prior ticket exists. Let me check for duplicates within 7 days."
+    },
+    {
+      "step": 7,
+      "action": "finish",
+      "input": "{\"decision\": {\"ticket_id\": \"TKT-192732\", \"account_id\": \"ACC-6031\", \"category\": \"duplicate\", \"priority\": \"P3\", \"route_to\": \"L1_support\", \"escalate\": false, \"notify_tam\": false, \"duplicate_of\": \"TKT-122022\", \"needs_clarification\": false, \"kb_references\": [\"KB-2982\", \"KB-5930\", \"KB-2914\"], \"account_sig",
+      "observation": "Submitting final decision.",
+      "thought": "A duplicate is confirmed. TKT-122022 (created 2026-10-17, 2 days ago) is open, same account, same module (Spend Analytics), same error E-6105, same symptom (spend dashboard not refreshing). Per KB-5930, this is a duplicate. I should set duplicate_of to TKT-122022, keep the original ticket's priority, and reply that the issue is being tracked on the original ticket.\n\nLet me determine the original t"
+    }
+  ]
+}

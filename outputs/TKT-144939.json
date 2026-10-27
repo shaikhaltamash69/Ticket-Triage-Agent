@@ -1,0 +1,78 @@
+{
+  "ticket_id": "TKT-144939",
+  "account_id": "ACC-3751",
+  "category": "incident",
+  "priority": "P1",
+  "route_to": "L2_engineering",
+  "escalate": true,
+  "notify_tam": true,
+  "duplicate_of": null,
+  "needs_clarification": false,
+  "kb_references": [
+    "KB-3985",
+    "KB-2914",
+    "KB-5930"
+  ],
+  "account_signals": [
+    "Premium tier, ARR 1M+",
+    "Renewal in 45 days (2026-12-04) \u2014 within 90-day risk window",
+    "NPS 5 \u2014 passive",
+    "Active users stable (-0.8% over 3mo) \u2014 no usage-based risk override",
+    "0 open escalations \u2014 no escalation-based risk override",
+    "1,200 invoices queued for month-end close \u2014 business deadline at risk"
+  ],
+  "customer_reply": "Thank you for reporting this, and I understand the urgency with your month-end close. I've confirmed that the E-4102 OCR failures you're seeing are part of a known issue (incident INC-26-0418) affecting invoice OCR processing following a recent release. Our engineering team is actively working on a hotfix.\n\nIn the meantime, here is the recommended workaround to keep your AP team moving:\n1. Switch the affected invoice channels to Manual Entry mode (Admin > eInvoice > Channels).\n2. Hold non-critical month-end OCR batches until the hotfix is deployed, and process any critical invoices manually.\n\nPlease note that clearing caches or re-uploading invoices will not resolve this, so I'd recommend against spending time on that.\n\nI've escalated this as a P1 and linked it to the active incident so it's being tracked with the engineering team. I'll keep you updated as the hotfix progresses. Given the volume of invoices in your queue, I've also flagged this to your account team so we can support you through month-end close.",
+  "internal_note": "Confirmed active incident INC-26-0418 (KB-3985): E-4102 OCR failures on tenants upgraded to 26.2.3. All OCR processing blocked for this tenant \u2192 P1 per KB-3985. Route to L2 Engineering and link to INC-26-0418. Do NOT ask customer to clear caches/re-upload. Notify TAM (Premium account per KB-3985). Account risk override NOT triggered (active users -0.8%, 0 escalations) but renewal is 45 days out and 1,200 invoices queued for month-end close \u2014 high business impact. No duplicate found (no other open eInvoice/E-4102 ticket within 7 days).",
+  "confidence": 0.97,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "get_policy",
+      "input": "{\"policy_type\": \"all\"}",
+      "observation": "{\"policy_type\": \"all\", \"articles\": [{\"id\": \"KB-2914\", \"title\": \"Support priority and escalation policy\", \"body\": \"\\n# Support priority and escalation policy\\n\\nThis policy defines how every ticket is prioritised and routed. Customer-selected priority is an input, not the decision.\\n\\n## Priority def",
+      "thought": "I need to start by understanding the support policy and resolving the account. Let me call both in parallel since they're independent."
+    },
+    {
+      "step": 2,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"brightfield-manufacturing.example\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:brightfield-manufacturing.example\", \"account_id\": \"ACC-3751\", \"company_name\": \"Brightfield Manufacturing\", \"domain\": \"brightfield-manufacturing.example\", \"tier\": \"Premium\", \"arr_band\": \"1M+\", \"renewal_date\": \"2026-12-04\", \"days_to_renewal\": 45, \"open_escalations\": 0",
+      "thought": "I have the policy. Now let me resolve the account and search the KB for the error code E-4102 in parallel, since they're independent."
+    },
+    {
+      "step": 3,
+      "action": "get_account_health",
+      "input": "{\"account_id\": \"ACC-3751\", \"months\": 3}",
+      "observation": "{\"account_id\": \"ACC-3751\", \"available\": true, \"months\": [\"2026-08\", \"2026-09\", \"2026-10\"], \"active_users\": {\"values\": [747.0, 797.0, 741.0], \"direction\": \"stable\", \"pct_change\": -0.8, \"latest\": 741.0}, \"login_rate_pct\": {\"values\": [58.3, 56.6, 63.9], \"direction\": \"stable\", \"pct_change\": 9.6, \"latest",
+      "thought": "Account resolved: Premium tier, ARR 1M+, renewal in 45 days (within 90-day risk window), 0 open escalations, NPS 5. Now I need to check account health (for the -25% active users signal) and search the KB for error E-4102. Let me do both in parallel."
+    },
+    {
+      "step": 4,
+      "action": "search_kb",
+      "input": "{\"query\": \"E-4102 eInvoice OCR invoice processing failed\", \"module\": \"eInvoice\", \"top_k\": 6}",
+      "observation": "{\"query\": \"E-4102 eInvoice OCR invoice processing failed\", \"results\": [{\"id\": \"KB-3985\", \"title\": \"KNOWN ISSUE: Invoice OCR jobs fail with E-4102 after release 26.2.3\", \"module\": \"eInvoice\", \"type\": \"known_issue\", \"status\": \"active_incident\", \"error_codes\": [\"E-4102\"], \"snippet\": \"# KNOWN ISSUE: Inv",
+      "thought": "Account health shows active users stable (-0.8%), so no -25% decline. 0 open escalations. So the account risk override does NOT trigger (needs within 90 days renewal AND either -25% users OR 2+ escalations \u2014 neither condition met). Now let me search the KB for error E-4102 and check ticket history for duplicates in parallel."
+    },
+    {
+      "step": 5,
+      "action": "get_kb_article",
+      "input": "{\"article_id\": \"KB-3985\"}",
+      "observation": "{\"found\": true, \"id\": \"KB-3985\", \"title\": \"KNOWN ISSUE: Invoice OCR jobs fail with E-4102 after release 26.2.3\", \"module\": \"eInvoice\", \"type\": \"known_issue\", \"status\": \"active_incident\", \"error_codes\": [\"E-4102\"], \"last_updated\": \"2026-10-19\", \"related\": [\"KB-7914\", \"KB-2914\"], \"body\": \"\\n# KNOWN IS",
+      "thought": "There's a known active incident KB-3985 for E-4102 (incident INC-26-0418). This is highly relevant. Let me read the full article to understand impact, workaround, and routing. I also need the ticket history result which I requested in parallel \u2014 but only the search result came back. Let me read the KB article and re-request ticket history."
+    },
+    {
+      "step": 6,
+      "action": "get_ticket_history",
+      "input": "{\"account_id\": \"ACC-3751\", \"current_ticket_id\": \"TKT-144939\", \"module\": \"eInvoice\", \"error_code\": \"E-4102\", \"subject\": \"All invoices failing OCR since this morning - E-4102\", \"days_back\": 7}",
+      "observation": "{\"account_id\": \"ACC-3751\", \"total_tickets\": 22, \"summary\": \"Total tickets on file: 22\\nLast 30 days: 3 tickets\\nTop modules: Supplier Management(1), eInvoice(1), SSO(1)\", \"recent_tickets\": [{\"ticket_id\": \"TKT-144939\", \"created_at\": \"2026-10-20T07:58\", \"module\": \"eInvoice\", \"subject\": \"All invoices f",
+      "thought": "This is a confirmed active incident (INC-26-0418). The KB explicitly says: treat new E-4102 reports as P1 if all OCR processing is blocked, link to INC-26-0418, route to L2 Engineering, notify TAM for Premium accounts. This matches the ticket exactly (all invoices failing, Premium account). Now I need to check ticket history for duplicates before finalizing."
+    },
+    {
+      "step": 7,
+      "action": "finish",
+      "input": "{\"decision\": {\"ticket_id\": \"TKT-144939\", \"account_id\": \"ACC-3751\", \"category\": \"incident\", \"priority\": \"P1\", \"route_to\": \"L2_engineering\", \"escalate\": true, \"notify_tam\": true, \"duplicate_of\": null, \"needs_clarification\": false, \"kb_references\": [\"KB-3985\", \"KB-2914\", \"KB-5930\"], \"account_signals\": ",
+      "observation": "Submitting final decision.",
+      "thought": "No duplicates found (the only other eInvoice ticket is outside the 7-day window and different). This is a fresh P1 incident. \n\nDecision summary:\n- Category: incident (known active incident INC-26-0418)\n- Priority: P1 (all OCR processing blocked for tenant, per KB-3985 and policy)\n- Route: L2 Engineering (known active incident, link to INC-26-0418)\n- Escalate: true (P1)\n- Notify TAM: true (Premium "
+    }
+  ]
+}

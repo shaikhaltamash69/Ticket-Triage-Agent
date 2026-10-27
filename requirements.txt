@@ -1,0 +1,8 @@
+pandas>=2.0
+groq
+google-genai
+rank_bm25
+rapidfuzz
+# Install the SDK for the provider you use:
+# anthropic
+# openai

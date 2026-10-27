@@ -1,0 +1,62 @@
+{
+  "ticket_id": "TKT-135081",
+  "account_id": "ACC-7533",
+  "category": "security",
+  "priority": "P1",
+  "route_to": "security",
+  "escalate": true,
+  "notify_tam": true,
+  "duplicate_of": null,
+  "needs_clarification": false,
+  "kb_references": [
+    "KB-6401",
+    "KB-2914"
+  ],
+  "account_signals": [
+    "Enterprise tier, ARR 500k-1M",
+    "Renewal in 308 days (2027-08-24) — well outside 90-day risk window",
+    "Active users stable (-2.9% over 3mo: 475 to 461), login rate 72.9%",
+    "0 open escalations, NPS 9 (promoter)",
+    "No account risk override applicable — P1 mandated by security policy KB-6401"
+  ],
+  "customer_reply": "Thank you for bringing this to our attention, and we appreciate you flagging it promptly.\n\nWe take any report of potentially visible data between suppliers very seriously. Our Security team has been engaged immediately to investigate this matter. We will follow up with you as soon as we have initial findings.\n\nIn the meantime, we strongly recommend that you pause the affected reverse auction event until our Security team confirms the issue is contained. This is a precautionary step to protect the integrity of the bidding process for all participating suppliers.\n\nWe will keep you updated on the investigation. Please do not share any further details about the specific bid amounts or the competing supplier's identity in this thread \u2014 our Security team will reach out directly if they need additional information.\n\nWe apologize for any concern this may have caused and appreciate your cooperation.",
+  "internal_note": "P1 SECURITY - Suspected cross-supplier data exposure in Sourcing module (reverse auction). Supplier reported seeing a competing supplier's bid amounts on their screen during yesterday's auction. Per KB-6401: do NOT attempt to reproduce in customer tenant. Route to Security team immediately. Advise customer to pause affected auction event. Customer framed as 'FYI, not urgent' but policy mandates P1/Security regardless of tone. Enterprise account (ACC-7533, Silverline Energy, APAC, Energy sector, ARR 500k-1M). No duplicates. No account risk override. TAM notified due to P1 on Enterprise account.",
+  "confidence": 0.85,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "get_policy",
+      "input": "{\"policy_type\": \"all\"}",
+      "observation": "{\"policy_type\": \"all\", \"articles\": [{\"id\": \"KB-2914\", \"title\": \"Support priority and escalation policy\", \"body\": \"\\n# Support priority and escalation policy\\n\\nThis policy defines how every ticket is prioritised and routed. Customer-selected priority is an input, not the decision.\\n\\n## Priority def",
+      "thought": "Let me start by getting the support policy to understand priority, routing, and escalation rules. This is critical because the ticket describes a potential data exposure issue (supplier seeing competing supplier's bid amounts), which could be a security concern regardless of the customer's \"FYI, not urgent\" framing."
+    },
+    {
+      "step": 2,
+      "action": "get_kb_article",
+      "input": "{\"article_id\": \"KB-6401\"}",
+      "observation": "{\"found\": true, \"id\": \"KB-6401\", \"title\": \"Handling suspected data exposure between suppliers or tenants\", \"module\": \"All\", \"type\": \"policy\", \"status\": \"current\", \"error_codes\": [], \"last_updated\": \"2026-09-05\", \"related\": [\"KB-2914\"], \"body\": \"\\n# Handling suspected data exposure between suppliers ",
+      "thought": "The policy is clear. KB-6401 specifically covers \"suspected data exposure between suppliers or tenants\" - this ticket describes a supplier seeing a competing supplier's bid amounts during a reverse auction. This is a security/data exposure issue. Per policy:\n- Classify as Security, priority P1, regardless of customer's stated priority or tone\n- Route to Security, never L1\n- Escalate = true\n\nLet me"
+    },
+    {
+      "step": 3,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"silverline-energy.example\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:silverline-energy.example\", \"account_id\": \"ACC-7533\", \"company_name\": \"Silverline Energy\", \"domain\": \"silverline-energy.example\", \"tier\": \"Enterprise\", \"arr_band\": \"500k-1M\", \"renewal_date\": \"2027-08-24\", \"days_to_renewal\": 308, \"open_escalations\": 0, \"nps_last\": \"9",
+      "thought": "The KB-6401 article confirms the handling steps. Now let me resolve the account to get tier, renewal date, and other signals, and check for duplicates in parallel."
+    },
+    {
+      "step": 4,
+      "action": "get_ticket_history",
+      "input": "{\"account_id\": \"ACC-7533\", \"current_ticket_id\": \"TKT-135081\", \"module\": \"Sourcing\", \"error_code\": \"\", \"subject\": \"FYI - odd thing in auction\", \"days_back\": 7}",
+      "observation": "{\"account_id\": \"ACC-7533\", \"total_tickets\": 13, \"summary\": \"Total tickets on file: 13\\nLast 30 days: 2 tickets\\nTop modules: Sourcing(1), Contracts(1)\", \"recent_tickets\": [{\"ticket_id\": \"TKT-135081\", \"created_at\": \"2026-10-19T13:02\", \"module\": \"Sourcing\", \"subject\": \"FYI - odd thing in auction\", \"st",
+      "thought": "Account resolved. Silverline Energy is an Enterprise tier account, 308 days to renewal (well outside the 90-day window), 0 open escalations, NPS 9. No account risk override needed. Now let me check for duplicates and get account health."
+    },
+    {
+      "step": 5,
+      "action": "finish",
+      "input": "{\"decision\": {\"ticket_id\": \"TKT-135081\", \"account_id\": \"ACC-7533\", \"category\": \"security\", \"priority\": \"P1\", \"route_to\": \"security\", \"escalate\": true, \"notify_tam\": true, \"duplicate_of\": null, \"needs_clarification\": false, \"kb_references\": [\"KB-6401\", \"KB-2914\"], \"account_signals\": [\"Enterprise tier",
+      "observation": "Submitting final decision.",
+      "thought": "No duplicates found. The account is healthy (Enterprise, 308 days to renewal, 0 escalations, NPS 9). No account risk override applies.\n\nNow I have all the information I need to make the final triage decision:\n\n**Key findings:**\n- This is a **security/data exposure** report: a supplier saw a competing supplier's bid amounts during a reverse auction\n- Per KB-6401: Classify as Security, P1, route to "
+    }
+  ]
+}

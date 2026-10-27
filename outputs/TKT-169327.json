@@ -1,0 +1,68 @@
+{
+  "ticket_id": "TKT-169327",
+  "account_id": "ACC-4850",
+  "category": "incident",
+  "priority": "P3",
+  "route_to": "L1_support",
+  "escalate": false,
+  "notify_tam": false,
+  "duplicate_of": null,
+  "needs_clarification": false,
+  "kb_references": [
+    "KB-7072"
+  ],
+  "account_signals": [
+    "Enterprise tier, ARR 250k-500k",
+    "Renewal in 320 days (2027-09-05)",
+    "NPS N/A",
+    "0 open escalations",
+    "Account risk override NOT triggered (320 days to renewal)"
+  ],
+  "customer_reply": "Hello,\n\nThank you for reaching out. The error code E-5214 on the Supplier onboarding form is caused by a paused background scheduler job. Please follow the resolution steps in KB-7072:\n\n1. Open Admin > Scheduler and locate the paused job.\n2. Resume the job and run it once manually.\n3. Confirm that downstream records update within 15 minutes.\n\nIf the issue persists after following these steps, if more than 50 records are affected, or if the problem occurs on multiple tenants, please reply to this ticket and we will escalate to L2 Engineering for further investigation. When escalating, please include the tenant ID, the affected record ID, the exact error text, and the time of failure in UTC.\n\nBest regards,\nTechnical Support Team",
+  "internal_note": "TKT-169327 (Ironleaf Foods Europe, ACC-4850, Enterprise tier) reports error E-5214 on Supplier onboarding form. Root cause per KB-7072: paused background scheduler job. Resolution: Admin > Scheduler > resume job, run manually, confirm downstream records in 15 min. No duplicate found in last 7 days. Priority P3 (single user, workaround available). Route to L1_support. No escalation unless steps fail, >50 records, or multi-tenant. No TAM notification required (renewal 320 days, 0 escalations, no risk override).",
+  "confidence": 0.82,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"ironleaf-foods-europe.example\", \"company_name_raw\": \"Ironleaf Foods EU\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:ironleaf-foods-europe.example\", \"account_id\": \"ACC-4850\", \"company_name\": \"Ironleaf Foods Europe\", \"domain\": \"ironleaf-foods-europe.example\", \"tier\": \"Enterprise\", \"arr_band\": \"250k-500k\", \"renewal_date\": \"2027-09-05\", \"days_to_renewal\": 320, \"open_escalations\": 0, ",
+      "thought": "Resolve the account using the provided requester_domain to obtain account details for further triage."
+    },
+    {
+      "step": 2,
+      "action": "get_policy",
+      "input": "{\"policy_type\": \"all\"}",
+      "observation": "{\"policy_type\": \"all\", \"articles\": [{\"id\": \"KB-2914\", \"title\": \"Support priority and escalation policy\", \"summary\": \"# Support priority and escalation policy\\n\\nThis policy defines how every ticket is prioritised and routed. Customer-selected priority is an input, not the decision.\\n\\n## Priority de",
+      "thought": "Retrieve the support policy to understand priority definitions, routing rules, and duplicate handling before proceeding."
+    },
+    {
+      "step": 3,
+      "action": "search_kb",
+      "input": "{\"query\": \"E-5214 supplier portal onboarding form\", \"module\": \"supplier portal\", \"type_filter\": \"troubleshooting\", \"top_k\": 5}",
+      "observation": "{\"query\": \"E-5214 supplier portal onboarding form\", \"results\": [{\"id\": \"KB-7072\", \"title\": \"E-5214: Supplier onboarding form returns a validation error\", \"module\": \"Supplier Management\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-5214\"], \"snippet\": \"# E-5214: Supplier onboard",
+      "thought": "Search the knowledge base for the error code E-5214 and the supplier portal module to find relevant troubleshooting articles."
+    },
+    {
+      "step": 4,
+      "action": "get_kb_article",
+      "input": "{\"article_id\": \"KB-7072\"}",
+      "observation": "{\"found\": true, \"id\": \"KB-7072\", \"title\": \"E-5214: Supplier onboarding form returns a validation error\", \"module\": \"Supplier Management\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-5214\"], \"last_updated\": \"2026-09-19\", \"related\": [\"KB-2914\"], \"body\": \"\\n# E-5214: Supplier onb",
+      "thought": "Retrieve the full content of KB-7072 to understand the cause and resolution steps for error E-5214."
+    },
+    {
+      "step": 5,
+      "action": "get_ticket_history",
+      "input": "{\"account_id\": \"ACC-4850\", \"current_ticket_id\": \"TKT-169327\", \"module\": \"supplier portal\", \"error_code\": \"E-5214\", \"subject\": \"New supplier onboarding form error\", \"days_back\": 7}",
+      "observation": "{\"account_id\": \"ACC-4850\", \"total_tickets\": 15, \"summary\": \"Total tickets on file: 15\\nLast 30 days: 2 tickets\\nTop modules: eProcurement(1), Supplier Management(1)\", \"recent_tickets\": [{\"ticket_id\": \"TKT-105715\", \"created_at\": \"2026-10-10T12:38\", \"module\": \"eProcurement\", \"subject\": \"Question: chan",
+      "thought": "Retrieve ticket history again to ensure we have the duplicate check result."
+    },
+    {
+      "step": 6,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"ironleaf-foods-europe.example\", \"company_name_raw\": \"Ironleaf Foods EU\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:ironleaf-foods-europe.example\", \"account_id\": \"ACC-4850\", \"company_name\": \"Ironleaf Foods Europe\", \"domain\": \"ironleaf-foods-europe.example\", \"tier\": \"Enterprise\", \"arr_band\": \"250k-500k\", \"renewal_date\": \"2027-09-05\", \"days_to_renewal\": 320, \"open_escalations\": 0, ",
+      "thought": "Obtain full account details (tier, renewal date, escalations, NPS, signals) to assess any risk overrides and gather account signals for the final decision."
+    }
+  ]
+}

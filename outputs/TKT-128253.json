@@ -1,0 +1,77 @@
+{
+  "ticket_id": "TKT-128253",
+  "account_id": "ACC-3737",
+  "category": "needs_info",
+  "priority": "P3",
+  "route_to": "L1_support",
+  "escalate": false,
+  "notify_tam": false,
+  "duplicate_of": null,
+  "needs_clarification": true,
+  "kb_references": [],
+  "account_signals": [
+    "tier:Standard",
+    "renewal_in_300_days"
+  ],
+  "customer_reply": "Hello,\n\nThank you for reaching out. I\u2019m sorry you\u2019re experiencing issues with the platform. To investigate further, could you please provide more details?\n\n- Which specific features or pages are not working?\n- Are you seeing any error messages or codes?\n- Does the problem affect all users or only certain accounts?\n- Have you tried any troubleshooting steps (e.g., clearing cache, using a different browser, checking network connectivity)?\n\nThe more information you can share, the faster we can identify the root cause and get you back up and running.\n\nThank you,\nTechnical Support Team",
+  "internal_note": "Ticket vague \u2013 no module, error, or specific symptom. No duplicate found. Set P3, needs clarification, route to L1.",
+  "confidence": 0.86,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"clearwater-manufacturing.example\", \"company_name_raw\": \"\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:clearwater-manufacturing.example\", \"account_id\": \"ACC-3737\", \"company_name\": \"Clearwater Manufacturing\", \"domain\": \"clearwater-manufacturing.example\", \"tier\": \"Standard\", \"arr_band\": \"100k-250k\", \"renewal_date\": \"2027-08-16\", \"days_to_renewal\": 300, \"open_escalation",
+      "thought": "Resolve the account using the provided requester_domain to get account details needed for further triage."
+    },
+    {
+      "step": 2,
+      "action": "get_policy",
+      "input": "{\"policy_type\": \"all\"}",
+      "observation": "{\"policy_type\": \"all\", \"articles\": [{\"id\": \"KB-2914\", \"title\": \"Support priority and escalation policy\", \"summary\": \"# Support priority and escalation policy\\n\\nThis policy defines how every ticket is prioritised and routed. Customer-selected priority is an input, not the decision.\\n\\n## Priority de",
+      "thought": "Retrieve the support policy to apply priority, routing, and escalation rules before making decisions."
+    },
+    {
+      "step": 3,
+      "action": "search_kb",
+      "input": "{\"query\": \"system down nothing works module outage\", \"module\": \"\", \"type_filter\": \"troubleshooting\", \"top_k\": 5}",
+      "observation": "{\"query\": \"system down nothing works module outage\", \"results\": [{\"id\": \"KB-4757\", \"title\": \"E-3276: Supplier invitation creates duplicate records\", \"module\": \"Sourcing\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-3276\"], \"snippet\": \"# E-3276: Supplier invitation creates dupl",
+      "thought": "Search the knowledge base for generic outage or \"nothing works\" symptoms to see if there is a known issue or troubleshooting guide."
+    },
+    {
+      "step": 4,
+      "action": "get_account_health",
+      "input": "{\"account_id\": \"ACC-3737\", \"months\": 3}",
+      "observation": "{\"account_id\": \"ACC-3737\", \"available\": true, \"months\": [\"2026-08\", \"2026-09\", \"2026-10\"], \"active_users\": {\"values\": [108.0, 110.0, 107.0], \"direction\": \"stable\", \"pct_change\": -0.9, \"latest\": 107.0}, \"login_rate_pct\": {\"values\": [75.8, 61.5, 56.0], \"direction\": \"declining\", \"pct_change\": -26.1, \"l",
+      "thought": "Retrieve recent usage and risk signals for the account to assess impact and possible risk override."
+    },
+    {
+      "step": 5,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"clearwater-manufacturing.example\", \"company_name_raw\": \"\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:clearwater-manufacturing.example\", \"account_id\": \"ACC-3737\", \"company_name\": \"Clearwater Manufacturing\", \"domain\": \"clearwater-manufacturing.example\", \"tier\": \"Standard\", \"arr_band\": \"100k-250k\", \"renewal_date\": \"2027-08-16\", \"days_to_renewal\": 300, \"open_escalation",
+      "thought": "Get full account details for ACC-3737."
+    },
+    {
+      "step": 6,
+      "action": "search_kb",
+      "input": "{\"query\": \"system-wide outage cannot access platform\", \"module\": \"\", \"type_filter\": \"troubleshooting\", \"top_k\": 5}",
+      "observation": "{\"query\": \"system-wide outage cannot access platform\", \"results\": [{\"id\": \"KB-4383\", \"title\": \"E-8174: Sso login creates duplicate records\", \"module\": \"Platform\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-8174\"], \"snippet\": \"# E-8174: Sso login creates duplicate records\\n\\n#",
+      "thought": "Search the KB for a generic system-wide outage or \"nothing works\" troubleshooting guide."
+    },
+    {
+      "step": 7,
+      "action": "get_ticket_history",
+      "input": "{\"account_id\": \"ACC-3737\", \"current_ticket_id\": \"TKT-128253\", \"module\": \"\", \"error_code\": \"\", \"subject\": \"NOTHING WORKS\", \"days_back\": 7}",
+      "observation": "{\"account_id\": \"ACC-3737\", \"total_tickets\": 12, \"summary\": \"Total tickets on file: 12\\nLast 30 days: 2 tickets\\nTop modules: platform(1), (1)\", \"recent_tickets\": [{\"ticket_id\": \"TKT-128253\", \"created_at\": \"2026-10-20T08:49\", \"module\": \"\", \"subject\": \"NOTHING WORKS\", \"status\": \"open\", \"error_code\": \"",
+      "thought": "Check for recent tickets on this account that might be duplicates of this vague \"nothing works\" issue."
+    },
+    {
+      "step": 8,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"clearwater-manufacturing.example\", \"company_name_raw\": \"\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:clearwater-manufacturing.example\", \"account_id\": \"ACC-3737\", \"company_name\": \"Clearwater Manufacturing\", \"domain\": \"clearwater-manufacturing.example\", \"tier\": \"Standard\", \"arr_band\": \"100k-250k\", \"renewal_date\": \"2027-08-16\", \"days_to_renewal\": 300, \"open_escalation",
+      "thought": "Retrieve full account details (tier, renewal date, open escalations) to apply risk\u2011override rules and determine if a higher priority is warranted."
+    }
+  ]
+}

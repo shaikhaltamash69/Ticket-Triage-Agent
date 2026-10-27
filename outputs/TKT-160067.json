@@ -1,0 +1,42 @@
+{
+  "ticket_id": "TKT-160067",
+  "account_id": "ACC-8892",
+  "category": "feature_request",
+  "priority": "P4",
+  "route_to": "product",
+  "escalate": false,
+  "notify_tam": false,
+  "duplicate_of": null,
+  "needs_clarification": false,
+  "kb_references": [
+    "KB-4859"
+  ],
+  "account_signals": [
+    "Account resolved from ticket account_id: ACC-8892",
+    "Bulk approval request affects 500 purchase orders",
+    "Issue is explained by the documented 200-document batch limit"
+  ],
+  "customer_reply": "Thanks for reporting this. The Approve button is disabled because bulk approval supports a maximum of 200 purchase orders per batch by design. Please filter the list and process the approvals in batches of 200 or fewer, for example by supplier or date. This is expected behavior rather than a product defect. We have also recorded your request to support larger batches for product review.",
+  "internal_note": "Resolved to ACC-8892. KB-4859 confirms bulk approval accepts a maximum of 200 documents per batch and disables Approve above that limit. Classify as a P4 feature request for Product, not a bug; no escalation, TAM notification, duplicate, or clarification needed.",
+  "confidence": 0.94,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "resolve_account",
+      "input": "account_id=ACC-8892, requester_domain=copperfield-brands.example",
+      "observation": "Resolved the ticket to account ACC-8892."
+    },
+    {
+      "step": 2,
+      "action": "search_kb",
+      "input": "bulk approval limit 200 eProcurement",
+      "observation": "KB-4859 states that bulk approval supports at most 200 documents per batch and disables the Approve button above that limit."
+    },
+    {
+      "step": 3,
+      "action": "finish",
+      "input": "category=feature_request, priority=P4, route_to=product",
+      "observation": "The 500-PO request exceeds a documented product limit, so it is a feature request rather than a defect."
+    }
+  ]
+}

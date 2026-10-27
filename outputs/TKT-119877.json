@@ -1,0 +1,86 @@
+{
+  "ticket_id": "TKT-119877",
+  "account_id": "ACC-2431",
+  "category": "how_to",
+  "priority": "P3",
+  "route_to": "L1_support",
+  "escalate": true,
+  "notify_tam": true,
+  "duplicate_of": null,
+  "needs_clarification": false,
+  "kb_references": [
+    "KB-6082",
+    "KB-2914"
+  ],
+  "account_signals": [
+    "Renewal in 61 days (2026-12-20) \u2014 within risk window",
+    "2 open escalations \u2014 high risk",
+    "NPS 4 \u2014 at-risk customer",
+    "Premium tier account",
+    "Active users declining 34% over 3 months",
+    "Login rate % declining 37% over 3 months",
+    "Docs processed declining 49% over 3 months",
+    "Usage decline >25% \u2014 account risk override applies (KB-2914)"
+  ],
+  "customer_reply": "Hi there,\n\nThanks for reaching out \u2014 I understand the concern about purchase orders taking longer to appear in approver inboxes.\n\nThis is a known behaviour that can typically be resolved by checking a couple of settings:\n\n1. **Workflow Dispatcher interval:** Go to Admin > Scheduler > Workflow Dispatcher and confirm the interval is set to 5 minutes or less. If it has been increased, resetting it to 5 minutes should restore normal approval timing.\n\n2. **Auto-approval rules:** Review your auto-approval rules under Admin > eProcurement > Settings. If there are many rules with overlapping conditions, consolidating them can reduce queue backlog and speed up delivery to approver inboxes.\n\nIf after making these changes you still see delays exceeding 2 hours, please let us know and we'll escalate to our engineering team with a queue-depth review.\n\nI'm happy to walk you through either of these steps if it would be helpful \u2014 just reply to this ticket.\n\nBest regards,\nSupport Team",
+  "internal_note": "Pinecrest Logistics (ACC-2431, Premium, EMEA) reports approval delays in eProcurement. Matches KB-6082 (Workflow Dispatcher queue / auto-approval rule backlog). No error code, no production outage \u2014 how-to/configuration question. Base P4, raised to P3 via account risk override (renewal 61 days, active users -33.6%, 2 open escalations, NPS 4). Route to L1 for settings guidance. TAM notified per risk override. Note: usage decline is severe (docs -49%, logins -37%) \u2014 TAM should consider proactive outreach beyond this ticket. No duplicate found.",
+  "confidence": 0.92,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "get_policy",
+      "input": "{\"policy_type\": \"all\"}",
+      "observation": "{\"policy_type\": \"all\", \"articles\": [{\"id\": \"KB-2914\", \"title\": \"Support priority and escalation policy\", \"body\": \"\\n# Support priority and escalation policy\\n\\nThis policy defines how every ticket is prioritised and routed. Customer-selected priority is an input, not the decision.\\n\\n## Priority def",
+      "thought": "Let me start by getting the support policy to understand priority and routing rules, and simultaneously resolve the account."
+    },
+    {
+      "step": 2,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"pinecrest-logistics.example\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:pinecrest-logistics.example\", \"account_id\": \"ACC-2431\", \"company_name\": \"Pinecrest Logistics\", \"domain\": \"pinecrest-logistics.example\", \"tier\": \"Premium\", \"arr_band\": \"1M+\", \"renewal_date\": \"2026-12-20\", \"days_to_renewal\": 61, \"open_escalations\": 2, \"nps_last\": \"4\",",
+      "thought": "I have the policy. Now let me resolve the account and search the KB for relevant articles about eProcurement approval delays."
+    },
+    {
+      "step": 3,
+      "action": "get_account_health",
+      "input": "{\"account_id\": \"ACC-2431\", \"months\": 3}",
+      "observation": "{\"account_id\": \"ACC-2431\", \"available\": true, \"months\": [\"2026-08\", \"2026-09\", \"2026-10\"], \"active_users\": {\"values\": [1054.0, 839.0, 700.0], \"direction\": \"declining\", \"pct_change\": -33.6, \"latest\": 700.0}, \"login_rate_pct\": {\"values\": [68.6, 51.2, 43.5], \"direction\": \"declining\", \"pct_change\": -36.",
+      "thought": "The account is Premium, renewal in 61 days (within 90-day risk window), and has 2 open escalations. This triggers the account risk override. I need to check usage trends to confirm the -25% active users criterion, and also search KB for eProcurement approval delay issues. Let me do both."
+    },
+    {
+      "step": 4,
+      "action": "search_kb",
+      "input": "{\"query\": \"eProcurement approval delay purchase order inbox slow\", \"module\": \"eProcurement\", \"top_k\": 5}",
+      "observation": "{\"query\": \"eProcurement approval delay purchase order inbox slow\", \"results\": [{\"id\": \"KB-6082\", \"title\": \"Approvals appear in the approver inbox with a delay\", \"module\": \"eProcurement\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [], \"snippet\": \"# Approvals appear in the approver",
+      "thought": "The account health confirms the risk override: active users declined 33.6% (>25%) over 3 months, AND there are 2 open escalations, AND renewal is within 90 days (61 days). This triggers the account risk override \u2014 raise priority by one level (max P2) and notify TAM.\n\nNow let me search the KB for eProcurement approval delay issues and check for duplicates."
+    },
+    {
+      "step": 5,
+      "action": "get_kb_article",
+      "input": "{\"article_id\": \"KB-6082\"}",
+      "observation": "{\"found\": true, \"id\": \"KB-6082\", \"title\": \"Approvals appear in the approver inbox with a delay\", \"module\": \"eProcurement\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [], \"last_updated\": \"2026-07-18\", \"related\": [\"KB-2914\"], \"body\": \"\\n# Approvals appear in the approver inbox with",
+      "thought": "KB-6082 is a direct match for this symptom. Let me read the full article, and also check for duplicates on this account."
+    },
+    {
+      "step": 6,
+      "action": "get_ticket_history",
+      "input": "{\"account_id\": \"ACC-2431\", \"current_ticket_id\": \"TKT-119877\", \"module\": \"eProcurement\", \"error_code\": \"\", \"subject\": \"Quick question - approvals seem a bit slow\", \"days_back\": 7}",
+      "observation": "{\"account_id\": \"ACC-2431\", \"total_tickets\": 15, \"summary\": \"Total tickets on file: 15\\nLast 30 days: 3 tickets\\nTop modules: eProcurement(2), eProc(1)\", \"recent_tickets\": [{\"ticket_id\": \"TKT-119877\", \"created_at\": \"2026-10-20T10:11\", \"module\": \"eProcurement\", \"subject\": \"Quick question - approvals s",
+      "thought": "The KB article confirms this is a known troubleshooting scenario. The resolution involves checking the Workflow Dispatcher interval and auto-approval rules. The article also notes that sudden approval delays at a strategic account with declining usage should trigger TAM notification \u2014 which aligns with our account risk override.\n\nNow let me check for duplicates on this account."
+    },
+    {
+      "step": 7,
+      "action": "finish",
+      "input": "{\"_raw\": \"{\\\"decision\\\": {\\\"ticket_id\\\": \\\"TKT-119877\\\", \\\"account_id\\\": \\\"ACC-2431\\\", \\\"category\\\": \\\"how_to\\\", \\\"priority\\\": \\\"P3\\\", \\\"route_to\\\": \\\"L1_support\\\", \\\"escalate\\\": true, \\\"notify_tam\\\": true, \\\"duplicate_of\\\": null, \\\"needs_clarification\\\": false, \\\"kb_references\\\": [\\\"KB-6082\\\", \\\"KB",
+      "observation": "Submitting final decision.",
+      "thought": "No duplicates found. The other eProcurement ticket (TKT-159183) is about a catalog item issue, not approval delays, so it's not a duplicate.\n\nNow I have all the information I need to make my triage decision:\n\n**Account context:**\n- Premium tier, ARR 1M+\n- Renewal in 61 days (within 90-day risk window)\n- 2 open escalations\n- NPS 4 (at-risk)\n- Active users declined 33.6% over 3 months (>25%)\n- Login"
+    },
+    {
+      "step": 8,
+      "action": "finish",
+      "input": "{\"decision\": {\"ticket_id\": \"TKT-119877\", \"account_id\": \"ACC-2431\", \"category\": \"how_to\", \"priority\": \"P3\", \"route_to\": \"L1_support\", \"escalate\": true, \"notify_tam\": true, \"duplicate_of\": null, \"needs_clarification\": false, \"kb_references\": [\"KB-6082\", \"KB-2914\"], \"account_signals\": [\"Renewal in 61 d",
+      "observation": "Submitting final decision.",
+      "thought": "The schema validation failed because the fields need to be at the top level of the decision object, not nested. Let me restructure the decision object with all required fields at the top level."
+    }
+  ]
+}

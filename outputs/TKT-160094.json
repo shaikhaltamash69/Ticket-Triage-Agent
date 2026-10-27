@@ -1,0 +1,71 @@
+{
+  "ticket_id": "TKT-160094",
+  "account_id": "ACC-2507",
+  "category": "incident",
+  "priority": "P2",
+  "route_to": "L2_engineering",
+  "escalate": false,
+  "notify_tam": false,
+  "duplicate_of": null,
+  "needs_clarification": false,
+  "kb_references": [
+    "KB-4795",
+    "KB-7889"
+  ],
+  "account_signals": [
+    "Enterprise tier, ARR 250k-500k",
+    "Renewal in 150 days (2027-03-19)",
+    "NPS N/A",
+    "0 open escalations",
+    "Active users stable (+1.7% over 3mo)",
+    "Login rate stable (+11.5% over 3mo)",
+    "Account risk override NOT triggered (150 days to renewal, 0 escalations, no usage decline)"
+  ],
+  "customer_reply": "Hello,\n\nThank you for contacting us. The error E-3310 your suppliers are seeing when submitting bids is caused by a change to the buyer tenant SAML/SSO configuration that was not followed by an update to the supplier portal trust relationship, causing supplier session tokens to be rejected at bid submit.\n\nPlease follow the resolution steps from KB-4795:\n\n1. Confirm the buyer tenant SSO/SAML configuration changed recently (Admin > Security > SSO history).\n2. Follow KB-7889 to re-establish the supplier portal trust relationship (Admin > Security > SSO, download SAML metadata; Admin > Supplier Portal > Trust Settings, upload metadata; select Re-issue Supplier Session Keys; ask affected suppliers to sign in again and retry).\n3. Ask the supplier to sign out, clear the session and resubmit the bid.\n4. Since the RFx closes within 48 hours, we recommend extending the event deadline now to protect bid fairness while the trust relationship is re-established.\n\nIf the resolution steps fail, more than 50 records are affected, or the issue occurs on multiple tenants, please reply and we will escalate to L2 Engineering. When escalating, please include the tenant ID, affected record ID, exact error text, and time of failure in UTC.\n\nBest regards,\nTechnical Support Team",
+  "internal_note": "TKT-160094 (Frostline Telecom, ACC-2507, Enterprise) reports E-3310 bid submission failure in Sourcing. Business deadline <72h, classified P2 (major function impaired with business deadline at risk). Root cause per KB-4795: SAML/SSO config change not followed by supplier portal trust update. Resolution: KB-7889 trust re-establishment + event deadline extension. Route L2_engineering (P2 incident per KB-2914). escalate=false: KB-2914 sets escalate=true only for P1, security, and account risk overrides; P2 alone does not trigger it. notify_tam=false: no risk override (150 days to renewal, 0 escalations, users stable). No duplicate found.",
+  "confidence": 0.83,
+  "reasoning_trace": [
+    {
+      "step": 1,
+      "action": "resolve_account",
+      "input": "{\"requester_domain\": \"frostline-telecom.example\"}",
+      "observation": "{\"found\": true, \"method\": \"domain:frostline-telecom.example\", \"account_id\": \"ACC-2507\", \"company_name\": \"Frostline Telecom\", \"domain\": \"frostline-telecom.example\", \"tier\": \"Enterprise\", \"arr_band\": \"250k-500k\", \"renewal_date\": \"2027-03-19\", \"days_to_renewal\": 150, \"open_escalations\": 0, \"nps_last\": ",
+      "thought": "Resolve the account using the requester_domain to obtain account_id and tier information."
+    },
+    {
+      "step": 2,
+      "action": "get_policy",
+      "input": "{\"policy_type\": \"all\"}",
+      "observation": "{\"policy_type\": \"all\", \"articles\": [{\"id\": \"KB-2914\", \"title\": \"Support priority and escalation policy\", \"summary\": \"# Support priority and escalation policy\\n\\nThis policy defines how every ticket is prioritised and routed. Customer-selected priority is an input, not the decision.\\n\\n## Priority de",
+      "thought": "Retrieve the support policy to understand priority rules, routing, and duplicate handling before proceeding further."
+    },
+    {
+      "step": 3,
+      "action": "search_kb",
+      "input": "{\"query\": \"E-3310 Sourcing bid submission error\", \"module\": \"Sourcing\", \"type_filter\": \"troubleshooting\", \"top_k\": 5}",
+      "observation": "{\"query\": \"E-3310 Sourcing bid submission error\", \"results\": [{\"id\": \"KB-4795\", \"title\": \"E-3310: Bid submission is rejected\", \"module\": \"Sourcing\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-3310\"], \"snippet\": \"# E-3310: Bid submission is rejected\\n\\n## Symptoms\\nUsers see e",
+      "thought": "Search the knowledge base for articles related to the Sourcing module and error code E-3310 to find troubleshooting guidance.THOUGHT: Search the knowledge base for relevant articles about error E-3310 in the Sourcing module."
+    },
+    {
+      "step": 4,
+      "action": "get_kb_article",
+      "input": "{\"article_id\": \"KB-4795\"}",
+      "observation": "{\"found\": true, \"id\": \"KB-4795\", \"title\": \"E-3310: Bid submission is rejected\", \"module\": \"Sourcing\", \"type\": \"troubleshooting\", \"status\": \"current\", \"error_codes\": [\"E-3310\"], \"last_updated\": \"2026-08-10\", \"related\": [\"KB-2914\", \"KB-7889\"], \"body\": \"\\n# E-3310: Bid submission is rejected\\n\\n## Symp",
+      "thought": "Retrieve the full content of KB-4795 to understand the cause and recommended remediation for error E-3310.THOUGHT: Fetch the detailed KB article for E-3310 troubleshooting.THOUGHT: Retrieve the full KB article content for KB-4795."
+    },
+    {
+      "step": 5,
+      "action": "get_account_health",
+      "input": "{\"account_id\": \"ACC-2507\", \"months\": 3}",
+      "observation": "{\"account_id\": \"ACC-2507\", \"available\": true, \"months\": [\"2026-08\", \"2026-09\", \"2026-10\"], \"active_users\": {\"values\": [527.0, 523.0, 536.0], \"direction\": \"stable\", \"pct_change\": 1.7, \"latest\": 536.0}, \"login_rate_pct\": {\"values\": [70.6, 70.4, 78.7], \"direction\": \"stable\", \"pct_change\": 11.5, \"latest",
+      "thought": "Retrieve recent usage metrics and risk signals for ACC-2507 to assess any priority override conditions and understand account health."
+    },
+    {
+      "step": 6,
+      "action": "get_ticket_history",
+      "input": "{\"account_id\": \"ACC-2507\", \"current_ticket_id\": \"TKT-160094\", \"module\": \"Sourcing\", \"error_code\": \"E-3310\", \"subject\": \"Suppliers cannot submit bids - E-3310\", \"days_back\": 7}",
+      "observation": "{\"account_id\": \"ACC-2507\", \"total_tickets\": 11, \"summary\": \"Total tickets on file: 11\\nLast 30 days: 1 tickets\\nTop modules: Sourcing(1)\", \"recent_tickets\": [{\"ticket_id\": \"TKT-160094\", \"created_at\": \"2026-10-20T09:50\", \"module\": \"Sourcing\", \"subject\": \"Suppliers cannot submit bids - E-3310\", \"statu",
+      "thought": "Check for recent tickets on the same account that might be duplicates (same module and error code) within the last 7 days."
+    }
+  ]
+}
